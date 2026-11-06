@@ -1,0 +1,25 @@
+{
+  "projects": [
+    {"name":"agent-quality-handler","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/agent-quality-handler","owner":null,"images":["agent-quality-handler"]},
+    {"name":"agentic-predictive-maintenance-pipeline","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"agentic-predictive-maintenance-pipeline","owner":null,"images":["apm-storage-service","apm-ui-service","apm-detection-service","agent-quality-handler"]},
+    {"name":"alert-agent-service","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/alert-agent-service","owner":null,"images":["alert-agent-service"]},
+    {"name":"chat-question-and-answer-core","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"sample-applications/chat-question-and-answer-core","owner":null,"images":[{"repository":"intel/chatqna","tag":"core_{version}"},{"repository":"intel/chatqna","tag":"core_ollama_{version}"},{"repository":"intel/chatqna-ui","tag":"core_{version}"}]},
+    {"name":"document-ingestion","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/document-ingestion/pgvector","pr_paths":["microservices/document-ingestion"],"owner":null,"images":["document-ingestion"]},
+    {"name":"document-summarization","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"sample-applications/document-summarization","owner":null,"images":["document-summary"]},
+    {"name":"live-video-alert-agent","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"live-video-analysis/live-video-alert-agent","owner":null,"images":["live-video-alert-agent"]},
+    {"name":"live-video-captioning","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"live-video-analysis/live-video-captioning","owner":null,"images":["video-caption-service"]},
+    {"name":"live-video-captioning-rag","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"live-video-analysis/live-video-captioning-rag","owner":null,"images":["live-video-captioning-rag"]},
+    {"name":"live-video-search","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"live-video-analysis/live-video-search","owner":null,"images":["video-search","pipeline-manager","vss-ui","multimodal-dataprep","multimodal-embedding-serving", "vector-retriever-vdms"]},
+    {"name":"model-download","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/model-download","owner":null,"images":["model-download"]},
+    {"name":"multimodal-embedding-serving","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/multimodal-embedding-serving","owner":null,"images":["multimodal-embedding-serving"]},
+    {"name":"smart-nvr","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"smart-nvr","owner":null,"images":["nvr-event-router"]},
+    {"name":"smart-route-planning-agent","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"smart-route-planning-agent","owner":null,"images":["smart-route-planning-agent"]},
+    {"name":"smart-traffic-intersection-agent","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"smart-traffic-intersection-agent","owner":null,"images":["smart-traffic-intersection-agent"]},
+    {"name":"vector-retriever","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/vector-retriever/vector-retriever","pr_paths":["microservices/vector-retriever"],"owner":null,"images":["vector-retriever-vdms","vector-retriever-milvus","vector-retriever-pgvector","vector-retriever-faiss"]},
+    {"name":"video-search-and-summarization","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"sample-applications/video-search-and-summarization","owner":null,"images":["pipeline-manager","video-ingestion","video-search","vss-ui","multimodal-dataprep","multimodal-embedding-serving","vector-retriever-vdms"]},
+    {"name":"visual-data-preparation-for-retrieval","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/visual-data-preparation-for-retrieval/multimodal-dataprep","pr_paths":["microservices/visual-data-preparation-for-retrieval"],"owner":null,"images":["multimodal-dataprep"]},
+    {"name":"real-time-scene-understanding","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"live-video-analysis/real-time-scene-understanding","owner":null,"images":["real-time-scene-understanding"]},
+    {"name":"stream-manager","category":"EAL","repo":"open-edge-platform/edge-ai-libraries","path":"microservices/stream-manager","owner":null,"images":["stream-manager"]},
+    {"name":"video-security-guard","category":"EAS","repo":"open-edge-platform/metro-ai-suite","path":"virtual-security-guard-agent","owner":null,"images":["vsg-ui"],"mapping_note":"Provisional mapping from PR #41 to virtual-security-guard-agent; confirm release scope."}
+  ]
+}
