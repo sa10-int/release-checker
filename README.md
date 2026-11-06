@@ -142,13 +142,48 @@ No images are pulled, pushed, or retagged; no PRs are created or merged.
 
 ## Interactive agent skill
 
-Invoke `/release-readiness` in this workspace. The skill lives in
-[SKILL.md](.github/skills/release-readiness/SKILL.md). It asks separately for the
-release-notes version and image-tag version, any new projects (repo, paths, category,
-owner, images), and any owner updates. It confirms catalog edits, persists them,
-validates the catalog, runs the CLI, and presents separate EAL/EAS tables and
-deduplicated reconciliation. Owners remain Pending until explicitly confirmed.
-The Python CLI itself remains noninteractive for repeatable local/scheduled use.
+The skill lives in [SKILL.md](.github/skills/release-readiness/SKILL.md) and is
+discovered automatically by agents that support workspace skills (for example
+GitHub Copilot in VS Code) when this folder is open as the workspace root.
+
+### How to run it
+
+1. **Open this repository as the workspace root** so the agent can find
+   `.github/skills/release-readiness/SKILL.md`, `projects.json`, and
+   `release_check.py`.
+2. **Make GitHub authentication available before starting** (recommended):
+   set `GH_TOKEN` or `GITHUB_TOKEN` through your normal secret-management
+   process, or sign in with `gh auth login`. The token needs read access to the
+   catalog repositories and must be a REST API token (classic PAT or
+   fine-grained token). Git-transport-only OAuth credentials stored by Git
+   Credential Manager are rejected by `api.github.com`. Never paste tokens into
+   chat or store them in the catalog. Without authentication the public API
+   allows ~60 requests/hour, which is not enough for a full PR scan.
+3. **Invoke the skill** in agent chat, e.g. `/release-readiness`, or ask in
+   natural language: "run the release readiness report".
+4. **Answer the input form.** The skill always asks before running; it never
+   reuses versions from a previous report. It collects:
+   - the exact **release-notes version** (e.g. `2026.3.0-rc1`),
+   - the exact **image-tag version** (may differ from the notes version),
+   - the **scope**: all EAL/EAS (default), EAL only, EAS only, or specific
+     projects,
+   - any **catalog changes**: new projects (name, `owner/repository`, category,
+     verified owner or Pending, paths, images/tag templates) or owner updates.
+5. **Review catalog edits** if you requested any; the skill confirms a summary
+   before persisting them to `projects.json`, then validates the catalog
+   (`--validate-catalog`) before making any network requests.
+6. **Read the results.** The skill runs the CLI and presents separate EAL/EAS
+   six-column tables in catalog order, the deduplicated open-PR reconciliation,
+   scan status and errors, and links to the timestamped HTML/CSV/JSON reports
+   under `reports/`. Owners remain Pending until explicitly confirmed; the
+   skill never derives ownership from PR or commit authors.
+
+The skill is read-only towards GitHub and Docker Hub: it never pushes images,
+creates PRs, or merges PRs. If authentication is missing it offers an explicit
+choice between an unauthenticated (possibly incomplete) attempt and waiting for
+a token; incomplete PR scans are always labeled as such, never reported as zero
+open PRs. The Python CLI itself remains noninteractive for repeatable
+local/scheduled use.
 
 To validate catalog edits without making API requests:
 
