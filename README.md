@@ -115,33 +115,31 @@ python release_check.py --version 2026.3.0 --validate-catalog
 
 The skill ([SKILL.md](.github/skills/release-readiness/SKILL.md)) is discovered
 automatically when this repository is open as the workspace root. It asks for
-the exact notes/image versions, scope, and any catalog changes; confirms and
-persists catalog edits; validates the catalog; runs the CLI; and presents
-EAL/EAS tables plus deduplicated PR reconciliation with links to the generated
-reports. It is read-only towards GitHub and Docker Hub: no image pushes, no PR
-creation or merging.
+versions/scope, confirms any catalog edits, validates the catalog, runs the
+CLI, and presents EAL/EAS tables, PR reconciliation, and report links.
+Read-only towards GitHub and Docker Hub. For a full PR scan, set a REST API
+token first (see [Authentication](#authentication)).
 
-### Invoke with PR scan (full report)
+### Sample prompts
 
-1. Make a REST API token available first (see
-   [Authentication](#authentication)); the skill will not paste-prompt for
-   tokens in chat.
-2. In agent chat, invoke `/release-readiness` or ask:
-   *"run the release readiness report"*.
-3. Answer the form: notes version, image-tag version, scope, catalog changes.
-4. The skill runs the full CLI (PR scan included) and presents the tables,
-   reconciliation, and report links.
+**With PR scan (full report):**
 
-### Invoke without PR scan (release notes + images only)
+> /release-readiness
+>
+> run the release readiness report for 2026.3.0-rc1
+>
+> check release readiness for EAL only, notes and images at 2026.3.0-rc1
 
-1. Invoke `/release-readiness` and state up front that you want a
-   **readiness-only report**, e.g.:
-   *"run release readiness without the PR scan — only release notes and
-   image availability"*.
-2. Answer the same version/scope form.
-3. The skill runs the CLI with `--skip-prs` only after you accept a
-   readiness-only report; PR columns are marked skipped, never shown as zero.
-   No token is needed for typical scopes.
+**Without PR scan (release notes + images only):**
+
+> run release readiness without the PR scan — only release notes and image availability
+>
+> readiness-only check for 2026.3.0-rc1, skip open PRs
+>
+> are the 2026.3.0-rc1 images published and release notes updated? no PR report needed
+
+The skill uses `--skip-prs` only after you accept a readiness-only report;
+skipped PR columns are labeled as such, never shown as zero.
 
 ## Tests
 
