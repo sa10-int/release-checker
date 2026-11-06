@@ -4,17 +4,41 @@ Read-only release readiness checks for EAL/EAS components: release-note
 headings on a branch, Docker Hub image tags, and open PR scans.
 Requires **Python 3.11+**; no third-party packages.
 
-## Quick start
+## Run with PR scan (full report)
+
+Checks release notes, Docker images, and every open PR in the catalog
+repositories.
+
+1. Set `GH_TOKEN` or `GITHUB_TOKEN` (see [Authentication](#authentication)) —
+   required, a full PR scan exceeds the unauthenticated rate limit.
+2. From the repository root, run:
+
+   ```powershell
+   python release_check.py --version 2026.3.0-rc1
+   ```
+
+3. Read the EAL/EAS tables in the terminal and the timestamped HTML/CSV/JSON
+   under `reports/`.
+
+## Run without PR scan (release notes + images only)
+
+Checks only the release-note heading on the branch and Docker Hub tag
+availability. Needs ~1 GitHub request per project, so it usually works even
+unauthenticated.
+
+1. From the repository root, run:
+
+   ```powershell
+   python release_check.py --version 2026.3.0-rc1 --skip-prs
+   ```
+
+2. PR columns in the report are labeled as skipped, not zero.
+
+### Common variations (both modes)
 
 ```powershell
-# Full report: release notes + Docker images + open PR scan
-python release_check.py --version 2026.3.0-rc1
-
-# Readiness only (no PR scan): release notes + image availability
-python release_check.py --version 2026.3.0-rc1 --skip-prs
-
 # Different notes and image-tag versions
-python release_check.py --version 2026.3.0 --image-version 2026.3.0-rc1
+python release_check.py --version 2026.3.0 --image-version 2026.3.0-rc1 --skip-prs
 
 # Limit scope
 python release_check.py --version 2026.3.0-rc1 --category EAL
@@ -24,14 +48,6 @@ python release_check.py --version 2026.3.0-rc1 --project vector-retriever --proj
 Other flags: `--branch` (default `main`), `--catalog`, `--output`,
 `--discover` (suggest untracked release-note paths),
 `--validate-catalog` (offline catalog check, no network).
-
-## Checking only release notes and images
-
-Use `--skip-prs` to skip open PR scanning entirely. The report then verifies,
-per project, the exact version heading on the target branch and every required
-Docker Hub tag. PR columns are explicitly labeled as skipped, not zero.
-This needs roughly one GitHub API request per project, so it usually fits the
-unauthenticated limit; a full PR scan does not.
 
 ## Authentication
 
@@ -97,14 +113,35 @@ python release_check.py --version 2026.3.0 --validate-catalog
 
 ## Agent skill
 
-Open this repository as the workspace root and invoke `/release-readiness`
-(or ask "run the release readiness report"). The skill
-([SKILL.md](.github/skills/release-readiness/SKILL.md)) asks for the exact
-notes/image versions, scope, and any catalog changes; confirms and persists
-catalog edits; validates the catalog; runs the CLI; and presents EAL/EAS tables
-plus deduplicated PR reconciliation with links to the generated reports.
-It is read-only towards GitHub and Docker Hub: no image pushes, no PR
+The skill ([SKILL.md](.github/skills/release-readiness/SKILL.md)) is discovered
+automatically when this repository is open as the workspace root. It asks for
+the exact notes/image versions, scope, and any catalog changes; confirms and
+persists catalog edits; validates the catalog; runs the CLI; and presents
+EAL/EAS tables plus deduplicated PR reconciliation with links to the generated
+reports. It is read-only towards GitHub and Docker Hub: no image pushes, no PR
 creation or merging.
+
+### Invoke with PR scan (full report)
+
+1. Make a REST API token available first (see
+   [Authentication](#authentication)); the skill will not paste-prompt for
+   tokens in chat.
+2. In agent chat, invoke `/release-readiness` or ask:
+   *"run the release readiness report"*.
+3. Answer the form: notes version, image-tag version, scope, catalog changes.
+4. The skill runs the full CLI (PR scan included) and presents the tables,
+   reconciliation, and report links.
+
+### Invoke without PR scan (release notes + images only)
+
+1. Invoke `/release-readiness` and state up front that you want a
+   **readiness-only report**, e.g.:
+   *"run release readiness without the PR scan — only release notes and
+   image availability"*.
+2. Answer the same version/scope form.
+3. The skill runs the CLI with `--skip-prs` only after you accept a
+   readiness-only report; PR columns are marked skipped, never shown as zero.
+   No token is needed for typical scopes.
 
 ## Tests
 
